@@ -1,5 +1,6 @@
 # Hammertools (AxSHammer for Chromium browsers)
 
+## Chrome
 
 To install this extension, for now:
 
@@ -8,7 +9,11 @@ To install this extension, for now:
  3. Load unpacked extensions, choose this folder.
  4. Press shift 10 or applications key anywhere on a website, it should work, either hit the h key to look for Hammertools menu or use the arrows.
  5. Choose whichever option you want to do.
- 
+
+## Safari
+
+I think for now you will need a Developer account, sorry guys. tHere might be a way to allow unsigned extensions if you enable developer menu, but I don't know how to make it work for you because I have a developer account and I can just run in xcode, see if you can do it too.
+
 Original Readme follows.
  
 Sometimes, when something's broken, you have to hammer it into shape.
