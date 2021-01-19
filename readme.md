@@ -6,7 +6,7 @@ To install this extension, for now:
 
 1. Clone repo
  2. go to your Chrome addressbar, type in about:extensions
- 3. Load unpacked extensions, choose this folder.
+ 3. Load unpacked extensions, choose the chrome folder inside this folder.
  4. Press shift 10 or applications key anywhere on a website, it should work, either hit the h key to look for Hammertools menu or use the arrows.
  5. Choose whichever option you want to do.
 
