@@ -34,6 +34,17 @@ browser.runtime.onInstalled.addListener(function () {
   });
   browser.contextMenus.create({
     parentId: topMenu,
+    title: "Kill all aria-la&bel",
+    // onclick: killAllAriaLabel,
+  });
+  browser.contextMenus.create({
+    parentId: topMenu,
+    title: "Kill all ARIA &roles",
+    // onclick: killAllAriaRole,
+  });
+
+  browser.contextMenus.create({
+    parentId: topMenu,
     title: "No idea, do all the things",
     "id": "runall",
     contexts: ["all"],
@@ -84,6 +95,28 @@ function killAllAriaHidden(info, tab) {
   });
 }
 
+function killAllAriaLabel(info, tab) {
+  browser.tabs.executeScript(tab.id, {
+    allFrames: true,
+        code: `
+              for (let el of document.querySelectorAll("[aria-label]")) {
+                      el.removeAttribute("aria-label");
+                            }
+                          `,
+                        });
+                      }
+
+                      function killAllAriaRole(info, tab) {
+                        browser.tabs.executeScript(tab.id, {
+                          allFrames: true,
+                              code: `
+                                    for (let el of document.querySelectorAll("[role]")) {
+                                            el.removeAttribute("role");
+                                                  }
+                                                `,
+                                              });
+                                            }
+
 function killAllAriaLive(info, tab) {
   browser.tabs.executeScript(tab.id, {
     allFrames: true,
@@ -111,4 +144,6 @@ function runAll(info, tab) {
   killAllAriaHidden(info, tab);
   killAllAriaLive(info, tab);
   killAllAriaApplication(info, tab);
+  killAllAriaLabel(info, tab);
+  killAllAriaRole(info, tab);
 }

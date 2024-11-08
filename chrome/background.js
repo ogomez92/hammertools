@@ -1,114 +1,116 @@
-chrome.runtime.onInstalled.addListener(function () {
+chrome.runtime.onInstalled.addListener(() => {
   const topMenu = chrome.contextMenus.create({
     contexts: ["all"],
     title: "&Hammertools Menu",
     "id": "topMenu",
   });
-  chrome.contextMenus.create({
-    parentId: topMenu,
-    title: "Expose completely inaccessible elements",
-    "id": "expose",
-    contexts: ["all"],
-    //onclick: exposeCompletelyInaccessibleElements,
-  });
-  chrome.contextMenus.create({
-    parentId: topMenu,
-    title: "Kill all aria-&hidden",
-    "id": "killariahidden",
-    contexts: ["all"],
-    //onclick: killAllAriaHidden,
-  });
-  chrome.contextMenus.create({
-    parentId: topMenu,
-    title: "Kill all ARIA &live regions",
-    "id": "killlive",
-    contexts: ["all"],
-    //onclick: killAllAriaLive,
-  });
-  chrome.contextMenus.create({
-    parentId: topMenu,
-    title: "Kill all ARIA &applications",
-    "id": "fixapplication",
-    contexts: ["all"],
-    //onclick: killAllAriaApplication,
-  });
-  chrome.contextMenus.create({
-    parentId: topMenu,
-    title: "No idea, do all the things",
-    "id": "runall",
-    contexts: ["all"],
-    //onclick: runAll,
-  });
-});
-chrome.contextMenus.onClicked.addListener(function (info, tab) {
-  let id = info.menuItemId
-  if (id == "expose") exposeCompletelyInaccessibleElements(info, tab)
-  if (id == "killariahidden") killAllAriaHidden(info, tab)
-  if (id == "killlive") killAllAriaLive(info, tab)
-  if (id == "fixapplication") killAllAriaApplication(info, tab)
-  if (id == "runall") runAll(info, tab)
+
+  const menuItems = [
+    { id: "expose", title: "Expose completely inaccessible elements" },
+    { id: "killariaLabel", title: "Kill all aria-la&bel" },
+    { id: "killariaRole", title: "Kill all ARIA &roles" },
+    { id: "killariahidden", title: "Kill all aria-&hidden" },
+    { id: "killlive", title: "Kill all ARIA &live regions" },
+    { id: "fixapplication", title: "Kill all ARIA &applications" },
+    { id: "runall", title: "No idea, do all the things" }
+  ];
+
+  for (const item of menuItems) {
+    chrome.contextMenus.create({
+      parentId: topMenu,
+      contexts: ["all"],
+      "id": item.id,
+      "title": item.title,
+    });
+  }
 });
 
-//code
-function exposeCompletelyInaccessibleElements(info, tab) {
-  chrome.tabs.executeScript(tab.id, {
-    allFrames: true,
-    code: `
-      for (let el of document.body.querySelectorAll(":empty:not(input):not(textarea):not([aria-label])")) {
-        el.setAttribute("role", "button");
-        let label = typeof el.className == "string" ? el.className : null;
-        if (label) {
-          // Strip out useless Font Awesome stuff:
-          // fa- prefixes, but keep the rest (fa-foo becomes just foo); and
-          // far and fas classes.
-          label = label.replace(/\\bfa-|\\bfa[rs]?\\b/g, "");
-        }
-        if (label) {
-          el.setAttribute("aria-label", label);
-        }
-        el.setAttribute("data-axSHammer-exposedCompletelyInaccessibleElement",
-          "true");
-      }
-    `,
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  console.log(info,tab)
+  const actionMap = {
+    "expose": exposeCompletelyInaccessibleElements,
+    "killariahidden": killAllAriaHidden,
+    "killlive": killAllAriaLive,
+    "fixapplication": killAllAriaApplication,
+    "killariaLabel": killAllAriaLabel,
+    "killariaRole": killAllAriaRole,
+    "runall": runAll
+  };
+
+  const action = actionMap[info.menuItemId];
+  if (action && tab.id !== undefined) {
+    action(tab.id);
+  }
+});
+
+function executeScriptOnPage(tabId, code) {
+  chrome.scripting.executeScriptpt({
+    target: { tabId: tabId, allFrames: true },
+    func: code
   });
 }
 
-function killAllAriaHidden(info, tab) {
-  chrome.tabs.executeScript(tab.id, {
-    allFrames: true,
-    code: `
-      for (let el of document.querySelectorAll("[aria-hidden]")) {
-        el.removeAttribute("aria-hidden");
+function exposeCompletelyInaccessibleElements(tabId) {
+  executeScriptOnPage(tabId, () => {
+    for (let el of document.body.querySelectorAll(":empty:not(input):not(textarea):not([aria-label])")) {
+      el.setAttribute("role", "button");
+      let label = typeof el.className === "string" ? el.className : null;
+      if (label) {
+        label = label.replace(/\bfa-|\bfa[rs]?\b/g, "");
       }
-    `,
+      if (label) {
+        el.setAttribute("aria-label", label);
+      }
+      el.setAttribute("data-axSHammer-exposedCompletelyInaccessibleElement", "true");
+    }
   });
 }
 
-function killAllAriaLive(info, tab) {
-  chrome.tabs.executeScript(tab.id, {
-    allFrames: true,
-    code: `
-      for (let el of document.querySelectorAll("[aria-live]")) {
-        el.removeAttribute("aria-live");
-      }
-    `,
+function killAllAriaHidden(tabId) {
+  executeScriptOnPage(tabId, () => {
+    for (let el of document.querySelectorAll("[aria-hidden]")) {
+      el.removeAttribute("aria-hidden");
+    }
   });
 }
 
-function killAllAriaApplication(info, tab) {
-  chrome.tabs.executeScript(tab.id, {
-    allFrames: true,
-    code: `
-      for (let el of document.querySelectorAll("[role=application]")) {
-        el.removeAttribute("role");
-      }
-    `,
+function killAllAriaLabel(tabId) {
+  executeScriptOnPage(tabId, () => {
+    for (let el of document.querySelectorAll("[aria-label]")) {
+      el.removeAttribute("aria-label");
+    }
   });
 }
 
-function runAll(info, tab) {
-  exposeCompletelyInaccessibleElements(info, tab);
-  killAllAriaHidden(info, tab);
-  killAllAriaLive(info, tab);
-  killAllAriaApplication(info, tab);
+function killAllAriaRole(tabId) {
+  executeScriptOnPage(tabId, () => {
+    for (let el of document.querySelectorAll("[role]")) {
+      el.removeAttribute("role");
+    }
+  });
+}
+
+function killAllAriaLive(tabId) {
+  executeScriptOnPage(tabId, () => {
+    for (let el of document.querySelectorAll("[aria-live]")) {
+      el.removeAttribute("aria-live");
+    }
+  });
+}
+
+function killAllAriaApplication(tabId) {
+  executeScriptOnPage(tabId, () => {
+    for (let el of document.querySelectorAll("[role=application]")) {
+      el.removeAttribute("role");
+    }
+  });
+}
+
+function runAll(tabId) {
+  exposeCompletelyInaccessibleElements(tabId);
+  killAllAriaHidden(tabId);
+  killAllAriaLive(tabId);
+  killAllAriaApplication(tabId);
+  killAllAriaLabel(tabId);
+  killAllAriaRole(tabId);
 }

@@ -1,6 +1,6 @@
 {
   "name": "Hammertools",
-  "version": "1.0",
+  "version": "2024.1",
     "permissions": ["contextMenus","tabs", "http://*/*", "https://*/*"],
       "icons": {
     "16": "menu.png"

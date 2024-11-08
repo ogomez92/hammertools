@@ -1,14 +1,14 @@
 {
+  "manifest_version": 3,
   "name": "Hammertools",
-  "version": "1.0",
-    "permissions": ["contextMenus","tabs", "http://*/*", "https://*/*"],
-      "icons": {
+  "version": "2.0.0",
+  "description": "Access Hammer for Chrome, originally made by James Teh",
+  "permissions": ["tabs", "scripting", "contextMenus"],
+  "host_permissions": ["http://*/*", "https://*/*"],
+  "icons": {
     "16": "menu.png"
   },
-  "description": "Access Hammer for Chrome, originally made by James Teh",
-       "background": {
-    "persistent": false,
-    "scripts": ["background.js"]
-},
-  "manifest_version": 2
+  "background": {
+    "service_worker": "background.js"
+  }
 }
