@@ -32,7 +32,7 @@ For example, [AxSGrease](https://github.com/jcsteh/axSGrease) provides Greasemon
 But sometimes, you don't have the ability, time, money, patience or energy for either of these.
 You just want some kind of access and you're willing to deal with a bit (or a lot) of ugliness to get it.
 
-AxSHammer is a Mozilla Firefox add-on which provides a set of tools to try to help in this situation.
+AxSHammer is a Mozilla Firefox (Now Chromium) add-on which provides a set of tools to try to help in this situation.
 They might not work.
 They might break things further.
 Even if they do work, the access they provide is probably going to be ugly and suboptimal.
@@ -40,9 +40,11 @@ But when you're out of options, it might just be enough.
 Maybe.
 
 ## Tools
+
 The tools AxSHammer provides are accessed from the context menu of a web page, inside the AxSHammer menu.
 
 ### Expose completely inaccessible elements
+
 Websites frequently use elements containing background images or icons.
 If these aren't made accessible, they might not be visible to screen readers at all, to the point where a user might not even know they're there.
 For example, [my local Pizza store](https://www.pizzacommune.com.au/) allows you to customise the ingredients on your pizza.
@@ -58,6 +60,7 @@ The label might be pretty ugly, but it might be enough to distinguish it or help
 Note that this is likely to make a lot of things into buttons which aren't useful, but in some cases, the pros outweigh the cons.
 
 ### Kill all aria-hidden
+
 aria-hidden allows authors to specify that something should be invisible for accessibility purposes.
 Unfortunately, this is sometimes misused by authors, potentially hiding huge parts of a page or even the entire page!
 This is particularly common after closing a dialog.
@@ -67,11 +70,14 @@ This tool removes aria-hidden from everything.
 If you suspect that something on a page has been hidden from your assistive technology, give this tool a try.
 
 ### Kill all ARIA live regions
+
 ARIA live regions allow authors to specify that part of a page should be reported automatically when it is updated.
 When misused, particularly by ads, this can be extremely annoying.
+
 This tool disables all live regions on the page.
 
 ### Kill all ARIA applications
+
 Authors can specify that an area of a page should not be treated as a document at all by marking it as an "application".
 This means that screen readers won't use browse mode or equivalent by default.
 This is almost always misused.
@@ -80,21 +86,25 @@ This tool removes the application role from all elements.
 If your screen reader reports "application" while you're navigating and you think you're missing useful content, this tool might help.
 
 ### Kill all aria-label
+
 aria-label allows authors to specify a label for accessibility purposes.
 On elements such as links and buttons, this overrides the text content of the element.
-This is sometimes misused by authors to provide secondary information such as "(opens in a new tab)" or "Go to (some web address)".
+This is sometimes misused by authors to provide secondary information such as "(opens in a new
 This might result in overly long labels in some cases, but worse, it could result in the primary information being completely lost.
 
 This tool removes aria-label from everything.
 If you encounter a site with many links that are missing text you would expect, this tool might help.
 
 ### Kill all ARIA roles
+
 ARIA roles allow authors to specify the type of a custom element.
 For example, an author might use this if they implement a custom check box, menu, etc.
 Unfortunately, when ARIA roles are misused, they can make sites difficult or even impossible to use with assistive technology.
+
 This tool removes all ARIA roles.
 
 ### No idea, do all the things
+
 If you just don't know which tool to use, you can try this, which just runs all of the above, consequences be damned.
 For example, when shopping on [Robins Kitchen](https://www.robinskitchen.com.au/), I couldn't find the checkout button.
 I assumed it was an inaccessible icon, so I tried "Expose completely inaccessible elements" and was sad when I still couldn't check out.
