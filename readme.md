@@ -18,8 +18,8 @@ Original Readme follows.
 
 Sometimes, when something's broken, you have to hammer it into shape.
 
-- Author: James Teh
-- Copyright: 2020 James Teh
+- Author: James Teh &lt;jamie@jantrid.net&gt;
+- Copyright: 2020-2024 James Teh
 - License: GNU General Public License version 2.0
 
 In an ideal world, websites would all be accessible.
@@ -59,24 +59,6 @@ The label might be pretty ugly, but it might be enough to distinguish it or help
 
 Note that this is likely to make a lot of things into buttons which aren't useful, but in some cases, the pros outweigh the cons.
 
-### Kill all aria-label
-
-aria-label allows authors to specify a label for accessibility purposes.
-On elements such as links and buttons, this overrides the text content of the element.
-This is sometimes misused by authors to provide secondary information such as "(opens in a new
-This might result in overly long labels in some cases, but worse, it could result in the primary information being completely lost.
-This tool removes aria-label from everything.
-If you encounter a site with many links that are missing text you would expect, this tool might help.
-
-### Kill all ARIA roles
-
-ARIA roles allow authors to specify the type of a custom element.
-For example, an author might use this if they implement a custom check box, menu, etc.
-
-Unfortunately, when ARIA roles are misused, they can make sites difficult or even impossible to use with assistive technology.
-
-This tool removes all ARIA roles.
-
 ### Kill all aria-hidden
 
 aria-hidden allows authors to specify that something should be invisible for accessibility purposes.
@@ -91,6 +73,7 @@ If you suspect that something on a page has been hidden from your assistive tech
 
 ARIA live regions allow authors to specify that part of a page should be reported automatically when it is updated.
 When misused, particularly by ads, this can be extremely annoying.
+
 This tool disables all live regions on the page.
 
 ### Kill all ARIA applications
@@ -101,6 +84,24 @@ This is almost always misused.
 
 This tool removes the application role from all elements.
 If your screen reader reports "application" while you're navigating and you think you're missing useful content, this tool might help.
+
+### Kill all aria-label
+
+aria-label allows authors to specify a label for accessibility purposes.
+On elements such as links and buttons, this overrides the text content of the element.
+This is sometimes misused by authors to provide secondary information such as "(opens in a new
+This might result in overly long labels in some cases, but worse, it could result in the primary information being completely lost.
+
+This tool removes aria-label from everything.
+If you encounter a site with many links that are missing text you would expect, this tool might help.
+
+### Kill all ARIA roles
+
+ARIA roles allow authors to specify the type of a custom element.
+For example, an author might use this if they implement a custom check box, menu, etc.
+Unfortunately, when ARIA roles are misused, they can make sites difficult or even impossible to use with assistive technology.
+
+This tool removes all ARIA roles.
 
 ### No idea, do all the things
 
