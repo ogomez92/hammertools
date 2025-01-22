@@ -44,7 +44,7 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 });
 
 function executeScriptOnPage(tabId, code) {
-  chrome.scripting.executeScriptpt({
+  chrome.scripting.executeScript({
     target: { tabId: tabId, allFrames: true },
     func: code
   });
