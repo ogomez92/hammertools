@@ -8,6 +8,7 @@ chrome.runtime.onInstalled.addListener(() => {
   const menuItems = [
     { id: "expose", title: "Expose completely inaccessible elements" },
     { id: "killariaLabel", title: "Kill all aria-la&bel" },
+    { id: "unhideAllImages", title: "Unhide All &Images with empty alt text to Assistive Technologies" },
     { id: "killariaRole", title: "Kill all ARIA &roles" },
     { id: "killariahidden", title: "Kill all aria-&hidden" },
     { id: "killlive", title: "Kill all ARIA &live regions" },
@@ -26,11 +27,11 @@ chrome.runtime.onInstalled.addListener(() => {
 });
 
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  console.log(info,tab)
   const actionMap = {
     "expose": exposeCompletelyInaccessibleElements,
     "killariahidden": killAllAriaHidden,
     "killlive": killAllAriaLive,
+    unhideAllImages: unhideImages,
     "fixapplication": killAllAriaApplication,
     "killariaLabel": killAllAriaLabel,
     "killariaRole": killAllAriaRole,
@@ -106,6 +107,16 @@ function killAllAriaApplication(tabId) {
   });
 }
 
+function unhideAllImages(tabId) {
+  executeScriptOnPage(tabId, () => {
+    let counter = 0;
+    for (let el of document.querySelectorAll("img[alt='']")) {
+      counter++;
+      el.setAttribute("alt", `Unhidden Image ${counter}`);
+    }
+  });
+}
+
 function runAll(tabId) {
   exposeCompletelyInaccessibleElements(tabId);
   killAllAriaHidden(tabId);
@@ -113,4 +124,5 @@ function runAll(tabId) {
   killAllAriaApplication(tabId);
   killAllAriaLabel(tabId);
   killAllAriaRole(tabId);
+  unhideAllImages(tabId);
 }
